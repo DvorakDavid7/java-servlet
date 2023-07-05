@@ -1,18 +1,23 @@
 package servlet;
 
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import io.javalin.Javalin;
+import io.javalin.http.servlet.JavalinServlet;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 public class MyServlet extends HttpServlet {
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>Hello World</h1>");
-        out.println("</body></html>");
+    private final JavalinServlet javalinServlet = Javalin.createStandalone()
+            .get("/test", ctx -> ctx.result("hello from javalin"))
+            .get("/hello", ctx -> ctx.result("hi"))
+            .javalinServlet();
+
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        javalinServlet.service(request, response);
     }
 }

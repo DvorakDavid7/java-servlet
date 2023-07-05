@@ -1,4 +1,4 @@
-# Servlet for Tomcat 9
+# Servlet for Tomcat
 
 ## Build and run
 
